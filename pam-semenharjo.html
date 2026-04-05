@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0284c7" />
+  <title>PAM Semenharjo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f0f6ff;
+      --surface: #fff;
+      --surface2: #f4f8ff;
+      --border: #e2eaf6;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --accent: #0ea5e9;
+      --accent-d: #0284c7;
+      --accent-bg: #e0f2fe;
+      --green: #22c55e;
+      --green-bg: #dcfce7;
+      --green-d: #16a34a;
+      --amber: #f59e0b;
+      --amber-bg: #fef3c7;
+      --red: #ef4444;
+      --red-bg: #fee2e2;
+      --purple: #8b5cf6;
+      --purple-bg: #ede9fe;
+      --nav-h: 64px;
+      --top-h: 56px;
+      --r: 16px;
+      --r-sm: 12px;
+      --shadow: 0 2px 12px rgba(14, 165, 233, .10);
+      --shadow-lg: 0 8px 32px rgba(14, 165, 233, .15)
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased
+    }
+
+    .mono {
+      font-family: 'DM Mono', monospace
+    }
+
+    /* SHELL */
+    #shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 430px;
+      margin: 0 auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden
+    }
+
+    /* LOGIN */
+    #login-screen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #0c1f3a 0%, #0284c7 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      z-index: 999
+    }
+
+    .l-logo {
+      width: 72px;
+      height: 72px;
+      background: rgba(255, 255, 255, .15);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+      border: 1.5px solid rgba(255, 255, 255, .2)
+    }
+
+    .l-title {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center
+    }
+
+    .l-sub {
+      color: rgba(255, 255, 255, .5);
+      font-size: 13px;
+      text-align: center;
+      margin-top: 6px;
+      margin-bottom: 36px
+    }
+
+    .l-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, .1);
+      border: 1.5px solid rgba(255, 255, 255, .15);
+      border-radius: var(--r-sm);
+      font-size: 15px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 12px
+    }
+
+    .l-input::placeholder {
+      color: rgba(255, 255, 255, .35)
+    }
+
+    .l-input:focus {
+      border-color: rgba(255, 255, 255, .5);
+      background: rgba(255, 255, 255, .15)
+    }
+
+    .l-btn {
+      width: 100%;
+      padding: 15px;
+      background: #fff;
+      border: none;
+      border-radius: var(--r-sm);
+      color: var(--accent-d);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 4px
+    }
+
+    .l-btn:active {
+      opacity: .9
+    }
+
+    .l-hint {
+      color: rgba(255, 255, 255, .3);
+      font-size: 12px;
+      margin-top: 14px
+    }
+
+    /* TOPBAR */
+    #topbar {
+      height: var(--top-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      z-index: 50
+    }
+
+    .tb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .tb-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-d));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px
+    }
+
+    .tb-title {
+      font-size: 15px;
+      font-weight: 700
+    }
+
+    .tb-sub {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 1px
+    }
+
+    .avatar-btn {
+      width: 34px;
+      height: 34px;
+      background: var(--accent-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-d);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer
+    }
+
+    /* CONTENT */
+    #content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 80px
+    }
+
+    /* BOTTOM NAV */
+    #bnav {
+      height: var(--nav-h);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      z-index: 50
+    }
+
+    .ni {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      color: var(--text3);
+      font-size: 10.5px;
+      font-weight: 600;
+      position: relative
+    }
+
+    .ni.active {
+      color: var(--accent-d)
+    }
+
+    .ni-ico {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .ni-badge {
+      position: absolute;
+      top: -4px;
+      right: -9px;
+      background: var(--red);
+      color: #fff;
+      border-radius: 99px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      min-width: 16px;
+      text-align: center;
+      display: none;
+      line-height: 1.4
+    }
+
+    /* PAGES */
+    .page {
+      display: none
+    }
+
+    .page.active {
+      display: block;
+      animation: fi .15s ease
+    }
+
+    @keyframes fi {
+      from {
+        opacity: .5
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin: 0 12px 12px;
+      overflow: hidden
+    }
+
+    .ch {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .ct {
+      font-size: 13.5px;
+      font-weight: 700
+    }
+
+    .cb {
+      padding: 14px 16px
+    }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px 12px 4px
+    }
+
+    .sc {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      padding: 14px;
+      box-shadow: var(--shadow)
+    }
+
+    .sc-ico {
+      font-size: 22px;
+      margin-bottom: 8px
+    }
+
+    .sc-val {
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1
+    }
+
+    .sc-lbl {
+      font-size: 11.5px;
+      color: var(--text3);
+      margin-top: 3px;
+      font-weight: 500
+    }
+
+    .sc-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      margin-top: 7px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 99px
+    }
+
+    .tag-g {
+      background: var(--green-bg);
+      color: var(--green-d)
+    }
+
+    .tag-a {
+      background: var(--amber-bg);
+      color: #92400e
+    }
+
+    .tag-b {
+      background: var(--accent-bg);
+      color: var(--accent-d)
+    }
+
+    .tag-p {
+      background: var(--purple-bg);
+      color: #6d28d9
+    }
+
+    /* LIST ITEMS */
+    .li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer
+    }
+
+    .li:last-child {
+      border-bottom: none
+    }
+
+    .li:active {
+      background: var(--bg)
+    }
+
+    .li-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0
+    }
+
+    .li-main {
+      flex: 1;
+      min-width: 0
+    }
+
+    .li-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .li-sub {
+      font-size: 12px;
+      color: var(--text3);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .li-right {
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .li-amt {
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: 'DM Mono', monospace
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+      gap: 2px
+    }
+
+    .bg {
+      background: var(--green-bg);
+      color: var(--green-d)
+    }
+
+    .br {
+      background: var(--red-bg);
+      color: var(--red)
+    }
+
+    .ba {
+      background: var(--amber-bg);
+      color: #92400e
+    }
+
+    .bb {
+      background: var(--accent-bg);
+      color: var(--accent-d)
+    }
+
+    .bx {
+      background: var(--bg);
+      color: var(--text3);
+      border: 1px solid var(--border)
+    }
+
+    /* FORM */
+    .fsec {
+      padding: 12px 12px 4px
+    }
+
+    .fg {
+      margin-bottom: 14px
+    }
+
+    .fl {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text2);
+      margin-bottom: 6px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    .fi {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: .15s;
+      -webkit-appearance: none;
+      appearance: none
+    }
+
+    .fi:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, .12)
+    }
+
+    .fi.mono {
+      font-family: 'DM Mono', monospace;
+      font-size: 17px
+    }
+
+    .fi[readonly] {
+      background: var(--surface2);
+      color: var(--text3)
+    }
+
+    select.fi {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer
+    }
+
+    .frow {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 14px;
+      border-radius: var(--r-sm);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: .1s;
+      width: 100%
+    }
+
+    .btn:active {
+      transform: scale(.97)
+    }
+
+    .btn-p {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .btn-p:active {
+      background: var(--accent-d)
+    }
+
+    .btn-s {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn-s:active {
+      background: var(--green-d)
+    }
+
+    .btn-o {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text2)
+    }
+
+    .btn-o:active {
+      background: var(--bg)
+    }
+
+    .btn-d {
+      background: var(--red-bg);
+      color: var(--red);
+      border: 1.5px solid #fca5a5
+    }
+
+    .btn-sm {
+      padding: 9px 14px;
+      font-size: 13px;
+      width: auto
+    }
+
+    .brow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 12px 12px
+    }
+
+    .bsingle {
+      padding: 0 12px 12px
+    }
+
+    /* METER BOX */
+    .mbox {
+      background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+      border: 2px solid var(--accent);
+      border-radius: var(--r);
+      padding: 18px;
+      margin-bottom: 14px;
+      text-align: center
+    }
+
+    .mnum {
+      font-family: 'DM Mono', monospace;
+      font-size: 38px;
+      font-weight: 500;
+      color: var(--accent-d);
+      letter-spacing: .06em
+    }
+
+    .mlbl {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: 4px
+    }
+
+    /* BILL */
+    .bill {
+      background: var(--surface2);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--r-sm);
+      padding: 16px;
+      margin-bottom: 14px
+    }
+
+    .bill-r {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 13px
+    }
+
+    .bill-r .lbl {
+      color: var(--text3)
+    }
+
+    .bill-r .val {
+      font-weight: 600
+    }
+
+    .bdiv {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 8px 0
+    }
+
+    .btot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0
+    }
+
+    .btot-lbl {
+      font-size: 14px;
+      font-weight: 700
+    }
+
+    .btot-amt {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent-d);
+      font-family: 'DM Mono', monospace
+    }
+
+    /* ALERT */
+    .alert {
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px
+    }
+
+    .alert-a {
+      background: var(--amber-bg);
+      color: #92400e;
+      border: 1px solid #fcd34d
+    }
+
+    /* CHART */
+    .mchart {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 60px;
+      padding: 0 2px
+    }
+
+    .bar {
+      flex: 1;
+      background: var(--accent-bg);
+      border-radius: 4px 4px 0 0;
+      min-width: 6px
+    }
+
+    .bar:active {
+      background: var(--accent)
+    }
+
+    .bar-lbls {
+      display: flex;
+      gap: 5px;
+      padding: 4px 2px 0
+    }
+
+    .bar-lbl {
+      flex: 1;
+      font-size: 9px;
+      color: var(--text3);
+      text-align: center;
+      font-weight: 600
+    }
+
+    /* BOTTOM SHEET */
+    .sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, .45);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      backdrop-filter: blur(3px)
+    }
+
+    .sheet-overlay.show {
+      opacity: 1;
+      pointer-events: all
+    }
+
+    .sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      z-index: 501;
+      transform: translateY(100%);
+      transition: .3s cubic-bezier(.32, .72, 0, 1);
+      max-height: 93vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    .sheet-overlay.show .sheet {
+      transform: translateY(0)
+    }
+
+    .sh {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      margin: 10px auto 4px
+    }
+
+    .shdr {
+      padding: 8px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .shtitle {
+      font-size: 15px;
+      font-weight: 700
+    }
+
+    .shclose {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text3);
+      font-size: 16px;
+      cursor: pointer
+    }
+
+    .shbody {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 16px 8px;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .shfoot {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border)
+    }
+
+    /* SEARCH */
+    .swrap {
+      padding: 10px 12px 6px
+    }
+
+    .sinner {
+      position: relative
+    }
+
+    .sinner input {
+      padding-left: 38px;
+      background: var(--surface)
+    }
+
+    .sico {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none
+    }
+
+    /* FILTER CHIPS */
+    .fwrap {
+      padding: 4px 12px 10px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none
+    }
+
+    .fwrap::-webkit-scrollbar {
+      display: none
+    }
+
+    .chip {
+      flex-shrink: 0;
+      padding: 7px 14px;
+      border-radius: 99px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text2)
+    }
+
+    .chip.active {
+      background: var(--accent-d);
+      border-color: var(--accent-d);
+      color: #fff
+    }
+
+    /* EMPTY */
+    .empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text3)
+    }
+
+    .empty-ico {
+      font-size: 44px;
+      margin-bottom: 12px
+    }
+
+    .empty-txt {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.6
+    }
+
+    /* LAPORAN */
+    .lap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px 12px 4px
+    }
+
+    .lc {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      padding: 14px
+    }
+
+    .lc-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .06em
+    }
+
+    .lc-val {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 5px;
+      font-family: 'DM Mono', monospace
+    }
+
+    .lc-sub {
+      font-size: 11.5px;
+      color: var(--text3);
+      margin-top: 4px
+    }
+
+    /* SETTINGS */
+    .sg {
+      margin: 12px 12px 0
+    }
+
+    .sg-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      padding: 0 4px;
+      margin-bottom: 8px
+    }
+
+    .sg-card {
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 14px
+    }
+
+    .sr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer
+    }
+
+    .sr:last-child {
+      border-bottom: none
+    }
+
+    .sr:active {
+      background: var(--bg)
+    }
+
+    .sr-l {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .sr-ico {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px
+    }
+
+    .sr-txt .name {
+      font-size: 14px;
+      font-weight: 600
+    }
+
+    .sr-txt .desc {
+      font-size: 12px;
+      color: var(--text3);
+      margin-top: 1px
+    }
+
+    .sr-r {
+      color: var(--text3);
+      font-size: 18px
+    }
+
+    /* FAB */
+    .fab {
+      position: absolute;
+      bottom: 76px;
+      right: 16px;
+      width: 52px;
+      height: 52px;
+      background: var(--accent-d);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 26px;
+      box-shadow: 0 4px 20px rgba(2, 132, 199, .4);
+      cursor: pointer;
+      z-index: 100
+    }
+
+    .fab:active {
+      transform: scale(.93)
+    }
+
+    /* SECTION HEADER */
+    .sec {
+      padding: 16px 16px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .sec-t {
+      font-size: 15px;
+      font-weight: 700
+    }
+
+    .sec-a {
+      font-size: 12px;
+      color: var(--accent-d);
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    /* TOAST */
+    #toastwrap {
+      position: absolute;
+      top: 66px;
+      left: 12px;
+      right: 12px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none
+    }
+
+    .toast {
+      background: var(--text);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      animation: ti .25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .toast.success {
+      background: var(--green-d)
+    }
+
+    .toast.error {
+      background: var(--red)
+    }
+
+    @keyframes ti {
+      from {
+        opacity: 0;
+        transform: translateY(-8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* WARGA INFO CHIP */
+    .wchip {
+      background: var(--accent-bg);
+      border: 1px solid var(--accent);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      margin-bottom: 14px
+    }
+  </style>
+</head>
+
+<body>
+  <div id="shell">
+
+    <!-- LOGIN -->
+    <div id="login-screen">
+      <div class="l-logo"><svg width="36" height="36" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)">
+          <path d="M12 2C6 10 5 14 5 16a7 7 0 0014 0c0-2-1-6-7-14z" />
+        </svg></div>
+      <div class="l-title">PAM Semenharjo</div>
+      <div class="l-sub">Sistem Pencatatan Meteran Air Desa</div>
+      <input class="l-input" id="lu" type="text" placeholder="Username" value="admin" autocomplete="off" />
+      <input class="l-input" id="lp" type="password" placeholder="Password" value="1234" />
+      <button class="l-btn" onclick="doLogin()">Masuk →</button>
+      <p class="l-hint">Default: admin / 1234</p>
+    </div>
+
+    <!-- TOPBAR -->
+    <div id="topbar">
+      <div class="tb-left">
+        <div class="tb-logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+            <path d="M12 2C6 10 5 14 5 16a7 7 0 0014 0c0-2-1-6-7-14z" />
+          </svg></div>
+        <div>
+          <div class="tb-title" id="tbt">Beranda</div>
+          <div class="tb-sub" id="tbs">PAM Desa Semenharjo</div>
+        </div>
+      </div>
+      <div class="avatar-btn" onclick="openSheet('sh-logout')">A</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content">
+
+      <!-- BERANDA -->
+      <div id="page-dash" class="page active">
+        <div class="stat-grid">
+          <div class="sc">
+            <div class="sc-val" id="sw">0</div>
+            <div class="sc-lbl">Pelanggan Aktif</div>
+            <div class="sc-tag tag-b">Terdaftar</div>
+          </div>
+          <div class="sc">
+            <div class="sc-val mono" id="si" style="font-size:14px">Rp 0</div>
+            <div class="sc-lbl">Pemasukan Bulan Ini</div>
+            <div class="sc-tag tag-g">Terbayar</div>
+          </div>
+          <div class="sc">
+            <div class="sc-val" id="sl">0</div>
+            <div class="sc-lbl">Sudah Lunas</div>
+            <div class="sc-tag tag-g">Bulan ini</div>
+          </div>
+          <div class="sc">
+            <div class="sc-val" id="sb2">0</div>
+            <div class="sc-lbl">Belum Lunas</div>
+            <div class="sc-tag tag-a">Perlu ditagih</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Pemakaian 6 Bulan</span><span style="font-size:11px;color:var(--text3)"
+              id="chart-m3">0 m³</span></div>
+          <div class="cb" style="padding:12px 14px 14px">
+            <div class="mchart" id="mchart"></div>
+            <div class="bar-lbls" id="blbls"></div>
+          </div>
+        </div>
+        <div class="sec"><span class="sec-t">Tagihan Terbaru</span><span class="sec-a" onclick="navTo('tagihan')">Lihat
+            Semua</span></div>
+        <div class="card" style="margin-bottom:0">
+          <div id="dash-recent"></div>
+        </div>
+      </div>
+
+      <!-- WARGA -->
+      <div id="page-warga" class="page">
+        <div class="swrap">
+          <div class="sinner"><span class="sico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg></span><input class="fi" id="wsearch" placeholder="Cari nama atau ID..." oninput="renderWarga()" />
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div id="warga-list"></div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+
+      <!-- METER -->
+      <div id="page-meter" class="page">
+        <div class="fsec">
+          <div class="fg">
+            <label class="fl">Pilih Warga</label>
+            <select class="fi" id="mw" onchange="onWargaChange()">
+              <option value="">-- Pilih warga --</option>
+            </select>
+          </div>
+          <div id="wchip" style="display:none" class="wchip">
+            <div style="font-size:14px;font-weight:700;color:var(--accent-d)" id="wc-nama"></div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px" id="wc-alamat"></div>
+            <div style="font-size:12px;color:var(--text3);margin-top:2px;font-family:'DM Mono',monospace" id="wc-tarif">
+            </div>
+          </div>
+          <div class="fg"><label class="fl">Periode</label><input type="month" class="fi" id="mperiode" /></div>
+          <div class="frow">
+            <div class="fg"><label class="fl">Meter Awal</label><input type="number" class="fi mono" id="mawal"
+                readonly /></div>
+            <div class="fg"><label class="fl">Meter Akhir</label><input type="number" class="fi mono" id="makhir"
+                placeholder="0" inputmode="decimal" oninput="hitungMeter()" /></div>
+          </div>
+          <div class="fg"><label class="fl">Catatan</label><input type="text" class="fi" id="mcatat"
+              placeholder="Opsional..." /></div>
+        </div>
+
+        <div id="mpreview" style="display:none;padding:0 12px">
+          <div id="malert" class="alert alert-a" style="display:none"></div>
+          <div class="bill">
+            <div style="text-align:center;margin-bottom:12px">
+              <div
+                style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">
+                PAM Desa Semenharjo</div>
+              <div style="font-size:12px;color:var(--text3)" id="pv-period"></div>
+            </div>
+            <div class="mbox" style="margin:0 0 14px">
+              <div class="mnum" id="pv-pakai">0</div>
+              <div class="mlbl">m³ pemakaian</div>
+            </div>
+            <div class="bill-r"><span class="lbl">Nama</span><span class="val" id="pv-nama"></span></div>
+            <div class="bill-r"><span class="lbl">Meter Awal</span><span class="val mono" id="pv-awal"></span></div>
+            <div class="bill-r"><span class="lbl">Meter Akhir</span><span class="val mono" id="pv-akhir"></span></div>
+            <div class="bill-r"><span class="lbl">Tarif/m³</span><span class="val" id="pv-tarif"></span></div>
+            <div class="bill-r"><span class="lbl">Abonemen</span><span class="val" id="pv-abon"></span></div>
+            <hr class="bdiv" />
+            <div class="btot"><span class="btot-lbl">TOTAL</span><span class="btot-amt" id="pv-total"></span></div>
+          </div>
+        </div>
+        <div id="mhint" style="text-align:center;padding:24px 20px;color:var(--text3)">
+          <div style="margin-bottom:8px;color:var(--border)"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg></div>
+          <div style="font-size:13px">Isi meter akhir untuk melihat<br>preview tagihan</div>
+        </div>
+        <div class="brow">
+          <button class="btn btn-o" onclick="cetakStruk()">Cetak</button>
+          <button class="btn btn-p" onclick="simpanMeter()">Simpan</button>
+        </div>
+        <div class="sec" style="padding-top:8px"><span class="sec-t">Riwayat</span></div>
+        <div class="card" style="margin-bottom:0">
+          <div id="mhistory"></div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+
+      <!-- TAGIHAN -->
+      <div id="page-tagihan" class="page">
+        <div class="fwrap">
+          <div class="chip active" onclick="setFilter('semua',this)">Semua</div>
+          <div class="chip" onclick="setFilter('belum',this)">Belum</div>
+          <div class="chip" onclick="setFilter('lunas',this)">Lunas</div>
+        </div>
+        <div class="swrap" style="padding-top:0">
+          <div class="sinner"><span class="sico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg></span><input class="fi" id="tsearch" placeholder="Cari nama..." oninput="renderTagihan()" /></div>
+        </div>
+        <div style="padding:0 12px 10px"><input type="month" class="fi" id="tbulan" onchange="renderTagihan()" /></div>
+        <div class="card" style="margin-bottom:0">
+          <div id="tagihan-list"></div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+
+      <!-- LAPORAN -->
+      <div id="page-laporan" class="page">
+        <div class="fsec">
+          <div class="fg"><label class="fl">Pilih Periode</label><input type="month" class="fi" id="lapbulan"
+              onchange="renderLaporan()" /></div>
+        </div>
+        <div class="lap-grid">
+          <div class="lc">
+            <div class="lc-lbl">Pemakaian</div>
+            <div class="lc-val" id="lm3">0 m³</div>
+            <div class="lc-sub" id="lm3s">0 tagihan</div>
+          </div>
+          <div class="lc">
+            <div class="lc-lbl">Total Tagihan</div>
+            <div class="lc-val" id="lrp">Rp 0</div>
+            <div class="lc-sub" id="lrps">-</div>
+          </div>
+          <div class="lc">
+            <div class="lc-lbl">Sudah Bayar</div>
+            <div class="lc-val" id="llunas">Rp 0</div>
+            <div class="lc-sub" id="llunass">0 orang</div>
+          </div>
+          <div class="lc">
+            <div class="lc-lbl">Belum Bayar</div>
+            <div class="lc-val" id="lbelum">Rp 0</div>
+            <div class="lc-sub" id="lbelums">0 orang</div>
+          </div>
+        </div>
+        <div class="bsingle" style="padding-top:4px"><button class="btn btn-o" onclick="cetakLaporan()">Cetak
+            Laporan</button></div>
+        <div class="card" style="margin-bottom:0">
+          <div id="laporan-list"></div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+
+      <!-- PENGATURAN -->
+      <div id="page-setting" class="page">
+        <div class="sg">
+          <div class="sg-lbl" style="margin-top:4px">Tarif & Konfigurasi</div>
+          <div class="sg-card">
+            <div class="sr" onclick="openSheet('sh-tarif')">
+              <div class="sr-l">
+                <div class="sr-ico" style="background:var(--accent-bg)"><svg width="17" height="17" viewBox="0 0 24 24"
+                    fill="none" stroke="var(--accent-d)" stroke-width="2" stroke-linecap="round">
+                    <line x1="12" y1="1" x2="12" y2="23" />
+                    <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                  </svg></div>
+                <div class="sr-txt">
+                  <div class="name">Tarif Air</div>
+                  <div class="desc" id="sdesc-tarif">Rp 2.000/m³</div>
+                </div>
+              </div>
+              <div class="sr-r">›</div>
+            </div>
+            <div class="sr" onclick="openSheet('sh-desa')">
+              <div class="sr-l">
+                <div class="sr-ico" style="background:var(--green-bg)">🏘️</div>
+                <div class="sr-txt">
+                  <div class="name">Info Desa</div>
+                  <div class="desc" id="sdesc-desa">Semenharjo</div>
+                </div>
+              </div>
+              <div class="sr-r">›</div>
+            </div>
+          </div>
+          <div class="sg-lbl">Data & Backup</div>
+          <div class="sg-card">
+            <div class="sr" onclick="exportData()">
+              <div class="sr-l">
+                <div class="sr-ico" style="background:var(--accent-bg)"><svg width="17" height="17" viewBox="0 0 24 24"
+                    fill="none" stroke="var(--accent-d)" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg></div>
+                <div class="sr-txt">
+                  <div class="name">Export Data</div>
+                  <div class="desc">Simpan backup JSON</div>
+                </div>
+              </div>
+              <div class="sr-r">›</div>
+            </div>
+            <div class="sr" onclick="document.getElementById('impfile').click()">
+              <div class="sr-l">
+                <div class="sr-ico" style="background:var(--green-bg)"><svg width="17" height="17" viewBox="0 0 24 24"
+                    fill="none" stroke="var(--green-d)" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg></div>
+                <div class="sr-txt">
+                  <div class="name">Import Data</div>
+                  <div class="desc">Muat dari backup</div>
+                </div>
+              </div>
+              <div class="sr-r">›</div>
+            </div>
+            <div class="sr" onclick="resetData()">
+              <div class="sr-l">
+                <div class="sr-ico" style="background:var(--red-bg)"><svg width="17" height="17" viewBox="0 0 24 24"
+                    fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                  </svg></div>
+                <div class="sr-txt">
+                  <div class="name" style="color:var(--red)">Reset Semua Data</div>
+                  <div class="desc">Hapus seluruh data</div>
+                </div>
+              </div>
+              <div class="sr-r">›</div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:4px 0 28px;color:var(--text3);font-size:12px">PAM Desa Semenharjo
+            v1.0<br>Data tersimpan di perangkat ini</div>
+        </div>
+        <input type="file" id="impfile" accept=".json" style="display:none" onchange="importData(event)" />
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- FAB -->
+    <div class="fab" id="fab" style="display:none" onclick="openAddWarga()">＋</div>
+
+    <!-- BOTTOM NAV -->
+    <div id="bnav">
+      <div class="ni active" data-p="dash" onclick="navTo('dash')">
+        <div class="ni-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg></div><span>Beranda</span>
+      </div>
+      <div class="ni" data-p="warga" onclick="navTo('warga')">
+        <div class="ni-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+          </svg></div><span>Warga</span>
+      </div>
+      <div class="ni" data-p="meter" onclick="navTo('meter')">
+        <div class="ni-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg></div><span>Meter</span>
+      </div>
+      <div class="ni" data-p="tagihan" onclick="navTo('tagihan')">
+        <div class="ni-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16l3-2 2 2 2-2 2 2 3-2V4a2 2 0 00-2-2z" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg><span class="ni-badge" id="nbadge">0</span></div><span>Tagihan</span>
+      </div>
+      <div class="ni" data-p="laporan" onclick="navTo('laporan')">
+        <div class="ni-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+            <line x1="2" y1="20" x2="22" y2="20" />
+          </svg></div><span>Laporan</span>
+      </div>
+    </div>
+
+    <div id="toastwrap"></div>
+  </div><!-- /shell -->
+
+  <!-- SHEETS -->
+
+  <!-- Tambah/Edit Warga -->
+  <div class="sheet-overlay" id="sh-warga">
+    <div class="sheet">
+      <div class="sh"></div>
+      <div class="shdr"><span class="shtitle" id="sw-title">Tambah Warga</span>
+        <div class="shclose" onclick="closeSheet('sh-warga')">✕</div>
+      </div>
+      <div class="shbody">
+        <input type="hidden" id="sw-eid" />
+        <div class="frow">
+          <div class="fg"><label class="fl">ID Pelanggan</label><input type="text" class="fi mono" id="sw-id"
+              placeholder="SHJ-001" /></div>
+          <div class="fg"><label class="fl">Status</label><select class="fi" id="sw-status">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Non-aktif</option>
+            </select></div>
+        </div>
+        <div class="fg"><label class="fl">Nama Lengkap</label><input type="text" class="fi" id="sw-nama"
+            placeholder="Nama lengkap warga" /></div>
+        <div class="fg"><label class="fl">Alamat</label><input type="text" class="fi" id="sw-alamat"
+            placeholder="RT/RW, jalan..." /></div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Telepon</label><input type="tel" class="fi" id="sw-telp"
+              placeholder="08xx..." /></div>
+          <div class="fg"><label class="fl">Tarif/m³ (Rp)</label><input type="number" class="fi mono" id="sw-tarif" />
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Meter Awal (m³)</label><input type="number" class="fi mono" id="sw-mawal"
+            value="0" /></div>
+      </div>
+      <div class="shfoot"><button class="btn btn-p" onclick="simpanWarga()">Simpan</button></div>
+    </div>
+  </div>
+
+  <!-- Konfirmasi Bayar -->
+  <div class="sheet-overlay" id="sh-bayar">
+    <div class="sheet">
+      <div class="sh"></div>
+      <div class="shdr"><span class="shtitle">Konfirmasi Pembayaran</span>
+        <div class="shclose" onclick="closeSheet('sh-bayar')">✕</div>
+      </div>
+      <div class="shbody">
+        <div id="bayar-bill"></div>
+        <div class="fg"><label class="fl">Tanggal Bayar</label><input type="date" class="fi" id="btgl" /></div>
+        <div class="fg"><label class="fl">Nominal Diterima (Rp)</label><input type="number" class="fi mono" id="bnom"
+            inputmode="decimal" /></div>
+      </div>
+      <div class="shfoot"><button class="btn btn-s" onclick="konfirmasiBayar()">Tandai Lunas</button></div>
+    </div>
+  </div>
+
+  <!-- Tarif -->
+  <div class="sheet-overlay" id="sh-tarif">
+    <div class="sheet">
+      <div class="sh"></div>
+      <div class="shdr"><span class="shtitle">Pengaturan Tarif</span>
+        <div class="shclose" onclick="closeSheet('sh-tarif')">✕</div>
+      </div>
+      <div class="shbody">
+        <div class="fg"><label class="fl">Tarif Dasar per m³ (Rp)</label><input type="number" class="fi mono"
+            id="st-tarif" inputmode="decimal" /></div>
+        <div class="fg"><label class="fl">Abonemen per Bulan (Rp)</label><input type="number" class="fi mono"
+            id="st-abon" inputmode="decimal" /></div>
+      </div>
+      <div class="shfoot"><button class="btn btn-p" onclick="simpanTarif()">Simpan Tarif</button></div>
+    </div>
+  </div>
+
+  <!-- Info Desa -->
+  <div class="sheet-overlay" id="sh-desa">
+    <div class="sheet">
+      <div class="sh"></div>
+      <div class="shdr"><span class="shtitle">Info Desa</span>
+        <div class="shclose" onclick="closeSheet('sh-desa')">✕</div>
+      </div>
+      <div class="shbody">
+        <div class="fg"><label class="fl">Nama Desa</label><input type="text" class="fi" id="sd-desa" /></div>
+        <div class="fg"><label class="fl">Penanggung Jawab</label><input type="text" class="fi" id="sd-pj"
+            placeholder="Nama petugas" /></div>
+        <div class="fg"><label class="fl">No. Telepon</label><input type="tel" class="fi" id="sd-telp"
+            placeholder="08xx..." /></div>
+      </div>
+      <div class="shfoot"><button class="btn btn-p" onclick="simpanDesa()">Simpan</button></div>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="sheet-overlay" id="sh-logout">
+    <div class="sheet">
+      <div class="sh"></div>
+      <div class="shdr"><span class="shtitle">Akun</span>
+        <div class="shclose" onclick="closeSheet('sh-logout')">✕</div>
+      </div>
+      <div class="shbody">
+        <div style="display:flex;align-items:center;gap:14px;padding:8px 0 20px">
+          <div
+            style="width:52px;height:52px;background:var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700">
+            A</div>
+          <div>
+            <div style="font-size:16px;font-weight:700">Admin Petugas</div>
+            <div style="font-size:13px;color:var(--text3)">Operator PAM Semenharjo</div>
+          </div>
+        </div>
+      </div>
+      <div class="shfoot"><button class="btn btn-d" onclick="doLogout()">Keluar</button></div>
+    </div>
+  </div>
+
+  <script>
+    // ====== DB ======
+    let DB = { warga: [], tagihan: [], config: { tarif: 2000, abonemen: 5000, desa: 'Semenharjo', pj: '', telp: '' } };
+    let tFilter = 'semua', editTId = null;
+
+    function loadDB() {
+      const s = localStorage.getItem('pam_mob');
+      if (s) try { DB = JSON.parse(s); } catch (e) { }
+      if (!DB.warga) DB.warga = [];
+      if (!DB.tagihan) DB.tagihan = [];
+      if (!DB.config) DB.config = { tarif: 2000, abonemen: 5000, desa: 'Semenharjo', pj: '', telp: '' };
+      if (DB.warga.length === 0) seed();
+    }
+    function saveDB() { localStorage.setItem('pam_mob', JSON.stringify(DB)); }
+    function gid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+
+    function seed() {
+      const d = [['SHJ-001', 'Bapak Suparno', 'RT 01/01 Semenharjo', '08123401'], ['SHJ-002', 'Ibu Siti Aminah', 'RT 01/02 Semenharjo', '08123402'], ['SHJ-003', 'Bapak Winarno', 'RT 02/01 Semenharjo', '08123403'], ['SHJ-004', 'Ibu Sriwahyuni', 'RT 02/02 Semenharjo', '08123404'], ['SHJ-005', 'Bapak Joko Santoso', 'RT 03/01 Semenharjo', '08123405']];
+      d.forEach(x => DB.warga.push({ id: x[0], nama: x[1], alamat: x[2], telp: x[3], tarif: 2000, status: 'aktif', meterAwal: 0 }));
+      const now = new Date(), lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const lp = `${lm.getFullYear()}-${String(lm.getMonth() + 1).padStart(2, '0')}`;
+      const pem = [12, 9, 15, 8, 11];
+      DB.warga.forEach((w, i) => {
+        const p = pem[i];
+        DB.tagihan.push({ id: gid(), wargaId: w.id, periode: lp, meterAwal: 0, meterAkhir: p, pemakaian: p, tarif: w.tarif, abonemen: DB.config.abonemen, total: p * w.tarif + DB.config.abonemen, status: i < 3 ? 'lunas' : 'belum', tglBayar: i < 3 ? lp + '-15' : null, catatan: '' });
+        w.meterAwal = p;
+      });
+      saveDB();
+    }
+
+    // ====== AUTH ======
+    function doLogin() {
+      if (document.getElementById('lu').value === 'admin' && document.getElementById('lp').value === '1234') {
+        document.getElementById('login-screen').style.display = 'none'; init();
+      } else toast('Username / password salah', 'error');
+    }
+    document.getElementById('lp').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    function doLogout() { closeSheet('sh-logout'); document.getElementById('login-screen').style.display = 'flex'; }
+
+    // ====== INIT ======
+    function init() {
+      loadDB();
+      const now = new Date(), tp = nowPeriod();
+      document.getElementById('mperiode').value = tp;
+      document.getElementById('tbulan').value = tp;
+      document.getElementById('lapbulan').value = tp;
+      loadSettUI(); updateBadge();
+      renderDash(); renderWarga(); renderMeterForm(); renderTagihan(); renderLaporan();
+    }
+    function nowPeriod() { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}`; }
+    function loadSettUI() {
+      document.getElementById('sdesc-tarif').textContent = `${fRp(DB.config.tarif)}/m³`;
+      document.getElementById('sdesc-desa').textContent = DB.config.desa;
+      document.getElementById('st-tarif').value = DB.config.tarif;
+      document.getElementById('st-abon').value = DB.config.abonemen;
+      document.getElementById('sd-desa').value = DB.config.desa;
+      document.getElementById('sd-pj').value = DB.config.pj || '';
+      document.getElementById('sd-telp').value = DB.config.telp || '';
+    }
+
+    // ====== NAV ======
+    const pm = { dash: { t: 'Beranda', s: 'PAM Desa Semenharjo' }, warga: { t: 'Data Warga', s: 'Kelola pelanggan' }, meter: { t: 'Catat Meteran', s: 'Input angka meteran' }, tagihan: { t: 'Tagihan', s: 'Kelola pembayaran' }, laporan: { t: 'Laporan', s: 'Rekap pemakaian' }, setting: { t: 'Pengaturan', s: 'Konfigurasi sistem' } };
+    function navTo(p) {
+      document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.ni').forEach(x => x.classList.remove('active'));
+      document.getElementById('page-' + p).classList.add('active');
+      document.querySelector(`[data-p="${p}"]`)?.classList.add('active');
+      const m = pm[p] || {};
+      document.getElementById('tbt').textContent = m.t || p;
+      document.getElementById('tbs').textContent = m.s || '';
+      document.getElementById('content').scrollTop = 0;
+      document.getElementById('fab').style.display = p === 'warga' ? 'flex' : 'none';
+      if (p === 'dash') renderDash();
+      if (p === 'warga') renderWarga();
+      if (p === 'meter') renderMeterForm();
+      if (p === 'tagihan') renderTagihan();
+      if (p === 'laporan') renderLaporan();
+    }
+
+    // ====== DASH ======
+    function renderDash() {
+      const tp = nowPeriod(), tbi = DB.tagihan.filter(t => t.periode === tp);
+      const lunas = tbi.filter(t => t.status === 'lunas'), belum = tbi.filter(t => t.status === 'belum');
+      const income = lunas.reduce((s, t) => s + t.total, 0);
+      document.getElementById('sw').textContent = DB.warga.filter(w => w.status === 'aktif').length;
+      document.getElementById('si').textContent = fRp(income);
+      document.getElementById('sl').textContent = lunas.length;
+      document.getElementById('sb2').textContent = belum.length;
+      const now = new Date(), months = [];
+      for (let i = 5; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`); }
+      const vols = months.map(m => DB.tagihan.filter(t => t.periode === m).reduce((s, t) => s + t.pemakaian, 0));
+      const mx = Math.max(...vols, 1);
+      document.getElementById('mchart').innerHTML = vols.map(v => `<div class="bar" style="height:${Math.max((v / mx) * 52, 3)}px"></div>`).join('');
+      document.getElementById('blbls').innerHTML = months.map(m => { const [y, mo] = m.split('-'); return `<span class="bar-lbl">${new Date(y, mo - 1, 1).toLocaleDateString('id-ID', { month: 'short' })}</span>`; }).join('');
+      const cv = tbi.reduce((s, t) => s + t.pemakaian, 0);
+      document.getElementById('chart-m3').textContent = cv + ' m³ bulan ini';
+      const sorted = [...DB.tagihan].sort((a, b) => b.id.localeCompare(a.id)).slice(0, 5);
+      const el = document.getElementById('dash-recent');
+      if (!sorted.length) { el.innerHTML = `<div class="empty"><div class="empty-txt">Belum ada tagihan</div></div>`; return; }
+      el.innerHTML = sorted.map(t => {
+        const w = DB.warga.find(w => w.id === t.wargaId) || {};
+        return `<div class="li"><div class="li-ico" style="background:${t.status === 'lunas' ? 'var(--green-bg)' : 'var(--red-bg)'}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${t.status === 'lunas' ? 'var(--green-d)' : 'var(--red)'}" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="li-main"><div class="li-name">${w.nama || t.wargaId}</div><div class="li-sub">${pLabel(t.periode)} · ${t.pemakaian} m³</div></div><div class="li-right"><div class="li-amt">${fRp(t.total)}</div><div style="margin-top:4px">${sBadge(t.status)}</div></div></div>`;
+      }).join('');
+    }
+
+    // ====== WARGA ======
+    function renderWarga() {
+      const q = (document.getElementById('wsearch').value || '').toLowerCase();
+      const list = DB.warga.filter(w => !q || w.nama.toLowerCase().includes(q) || w.id.toLowerCase().includes(q));
+      const el = document.getElementById('warga-list');
+      if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-txt">Tidak ada warga</div></div>`; return; }
+      el.innerHTML = list.map(w => `<div class="li" onclick="editWarga('${w.id}')"><div class="li-ico" style="background:var(--accent-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-d)" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="li-main"><div class="li-name">${w.nama}</div><div class="li-sub">${w.id} · ${w.alamat}</div></div><div class="li-right"><div style="font-size:12px;color:var(--text2);font-weight:600">${fRp(w.tarif)}/m³</div><div style="margin-top:4px">${w.status === 'aktif' ? '<span class="badge bg">Aktif</span>' : '<span class="badge bx">Non-aktif</span>'}</div></div></div>`).join('');
+    }
+
+    function openAddWarga() {
+      document.getElementById('sw-eid').value = '';
+      document.getElementById('sw-title').textContent = 'Tambah Warga';
+      document.getElementById('sw-id').value = autoId();
+      document.getElementById('sw-nama').value = '';
+      document.getElementById('sw-alamat').value = '';
+      document.getElementById('sw-telp').value = '';
+      document.getElementById('sw-tarif').value = DB.config.tarif;
+      document.getElementById('sw-mawal').value = 0;
+      document.getElementById('sw-status').value = 'aktif';
+      openSheet('sh-warga');
+    }
+    function editWarga(id) {
+      const w = DB.warga.find(w => w.id === id); if (!w) return;
+      document.getElementById('sw-eid').value = w.id;
+      document.getElementById('sw-title').textContent = 'Edit Warga';
+      document.getElementById('sw-id').value = w.id;
+      document.getElementById('sw-nama').value = w.nama;
+      document.getElementById('sw-alamat').value = w.alamat;
+      document.getElementById('sw-telp').value = w.telp || '';
+      document.getElementById('sw-tarif').value = w.tarif;
+      document.getElementById('sw-mawal').value = w.meterAwal || 0;
+      document.getElementById('sw-status').value = w.status;
+      openSheet('sh-warga');
+    }
+    function simpanWarga() {
+      const nama = document.getElementById('sw-nama').value.trim(), id = document.getElementById('sw-id').value.trim();
+      if (!nama || !id) { toast('Nama dan ID wajib diisi', 'error'); return; }
+      const eid = document.getElementById('sw-eid').value;
+      const data = { id, nama, alamat: document.getElementById('sw-alamat').value.trim(), telp: document.getElementById('sw-telp').value.trim(), tarif: parseInt(document.getElementById('sw-tarif').value) || DB.config.tarif, meterAwal: parseInt(document.getElementById('sw-mawal').value) || 0, status: document.getElementById('sw-status').value };
+      if (eid) { const i = DB.warga.findIndex(w => w.id === eid); if (i > -1) DB.warga[i] = { ...DB.warga[i], ...data }; }
+      else { if (DB.warga.find(w => w.id === id)) { toast('ID sudah digunakan', 'error'); return; } DB.warga.push(data); }
+      saveDB(); closeSheet('sh-warga'); renderWarga(); toast(eid ? 'Data diperbarui' : 'Warga ditambahkan', 'success');
+    }
+    function autoId() { const nums = DB.warga.map(w => parseInt(w.id.replace(/\D/g, '')) || 0); return 'SHJ-' + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3, '0'); }
+
+    // ====== METER ======
+    function renderMeterForm() {
+      const sel = document.getElementById('mw');
+      sel.innerHTML = '<option value="">-- Pilih warga --</option>';
+      DB.warga.filter(w => w.status === 'aktif').forEach(w => sel.innerHTML += `<option value="${w.id}">${w.nama}</option>`);
+      resetMeter(); renderMeterHistory();
+    }
+    function resetMeter() {
+      document.getElementById('mawal').value = '';
+      document.getElementById('makhir').value = '';
+      document.getElementById('mcatat').value = '';
+      document.getElementById('mpreview').style.display = 'none';
+      document.getElementById('mhint').style.display = 'block';
+      document.getElementById('wchip').style.display = 'none';
+    }
+    function onWargaChange() {
+      const wid = document.getElementById('mw').value, periode = document.getElementById('mperiode').value;
+      if (!wid) { resetMeter(); return; }
+      const w = DB.warga.find(w => w.id === wid); if (!w) return;
+      document.getElementById('wc-nama').textContent = w.nama;
+      document.getElementById('wc-alamat').textContent = w.alamat;
+      document.getElementById('wc-tarif').textContent = `Tarif: ${fRp(w.tarif)}/m³ + Abonemen ${fRp(DB.config.abonemen)}`;
+      document.getElementById('wchip').style.display = 'block';
+      const lalu = DB.tagihan.filter(t => t.wargaId === wid && t.periode < periode).sort((a, b) => b.periode.localeCompare(a.periode));
+      document.getElementById('mawal').value = lalu.length ? lalu[0].meterAkhir : (w.meterAwal || 0);
+      document.getElementById('makhir').value = '';
+      hitungMeter();
+    }
+    function hitungMeter() {
+      const wid = document.getElementById('mw').value; if (!wid) return;
+      const w = DB.warga.find(w => w.id === wid); if (!w) return;
+      const awal = parseFloat(document.getElementById('mawal').value) || 0, akhirStr = document.getElementById('makhir').value;
+      if (akhirStr === '') { document.getElementById('mpreview').style.display = 'none'; document.getElementById('mhint').style.display = 'block'; return; }
+      const akhir = parseFloat(akhirStr), pakai = akhir - awal, total = pakai * w.tarif + DB.config.abonemen;
+      const periode = document.getElementById('mperiode').value;
+      document.getElementById('pv-period').textContent = pLabel(periode);
+      document.getElementById('pv-nama').textContent = w.nama;
+      document.getElementById('pv-pakai').textContent = pakai;
+      document.getElementById('pv-awal').textContent = awal + ' m³';
+      document.getElementById('pv-akhir').textContent = akhir + ' m³';
+      document.getElementById('pv-tarif').textContent = fRp(w.tarif);
+      document.getElementById('pv-abon').textContent = fRp(DB.config.abonemen);
+      document.getElementById('pv-total').textContent = fRp(total);
+      const al = document.getElementById('malert');
+      if (pakai < 0) { al.style.display = 'flex'; al.textContent = 'Peringatan: Meter akhir lebih kecil dari meter awal!'; }
+      else if (pakai > 50) { al.style.display = 'flex'; al.textContent = `Peringatan: Pemakaian ${pakai} m³ tergolong tinggi.`; }
+      else { al.style.display = 'none'; }
+      document.getElementById('mpreview').style.display = 'block';
+      document.getElementById('mhint').style.display = 'none';
+    }
+    function simpanMeter() {
+      const wid = document.getElementById('mw').value; if (!wid) { toast('Pilih warga', 'error'); return; }
+      const w = DB.warga.find(w => w.id === wid); if (!w) return;
+      const awal = parseFloat(document.getElementById('mawal').value) || 0, akhirStr = document.getElementById('makhir').value;
+      if (!akhirStr) { toast('Isi angka meter akhir', 'error'); return; }
+      const akhir = parseFloat(akhirStr), periode = document.getElementById('mperiode').value;
+      if (!periode) { toast('Pilih periode', 'error'); return; }
+      if (akhir < awal) { toast('Meter akhir tidak boleh lebih kecil', 'error'); return; }
+      if (DB.tagihan.find(t => t.wargaId === wid && t.periode === periode)) { toast('Tagihan bulan ini sudah ada!', 'error'); return; }
+      const pakai = akhir - awal, total = pakai * w.tarif + DB.config.abonemen;
+      DB.tagihan.push({ id: gid(), wargaId: wid, periode, meterAwal: awal, meterAkhir: akhir, pemakaian: pakai, tarif: w.tarif, abonemen: DB.config.abonemen, total, status: 'belum', tglBayar: null, catatan: document.getElementById('mcatat').value });
+      w.meterAwal = akhir; saveDB(); updateBadge(); toast('Tersimpan!', 'success');
+      renderMeterHistory(); document.getElementById('mw').value = ''; resetMeter();
+    }
+    function renderMeterHistory() {
+      const list = [...DB.tagihan].sort((a, b) => b.id.localeCompare(a.id)).slice(0, 15);
+      const el = document.getElementById('mhistory');
+      if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-txt">Belum ada riwayat</div></div>`; return; }
+      el.innerHTML = list.map(t => { const w = DB.warga.find(w => w.id === t.wargaId) || {}; return `<div class="li"><div class="li-ico" style="background:var(--surface2);font-size:13px;font-weight:700;color:var(--text3)">m³</div><div class="li-main"><div class="li-name">${w.nama || t.wargaId}</div><div class="li-sub">${pLabel(t.periode)} · ${t.meterAwal}→${t.meterAkhir} m³</div></div><div class="li-right"><div class="li-amt" style="font-size:12px;font-family:inherit">${t.pemakaian} m³</div><div style="font-size:11px;color:var(--text3);margin-top:3px">${fRp(t.total)}</div></div></div>`; }).join('');
+    }
+    function cetakStruk() {
+      const wid = document.getElementById('mw').value; if (!wid) { toast('Pilih warga', 'error'); return; }
+      const w = DB.warga.find(w => w.id === wid) || {};
+      const awal = document.getElementById('mawal').value, akhir = document.getElementById('makhir').value;
+      if (!akhir) { toast('Isi meter akhir', 'error'); return; }
+      const pakai = parseFloat(akhir) - parseFloat(awal), total = pakai * w.tarif + DB.config.abonemen;
+      const periode = document.getElementById('mperiode').value;
+      const win = window.open('', '_blank', 'width=360,height=500');
+      win.document.write(`<html><head><title>Struk</title><style>body{font-family:monospace;font-size:13px;padding:16px;width:300px}.c{text-align:center}.b{font-weight:bold}.d{border-top:1px dashed #000;margin:8px 0}.r{display:flex;justify-content:space-between}</style></head><body>
+  <div class="c b">PAM DESA ${DB.config.desa.toUpperCase()}</div><div class="d"></div>
+  <div class="r"><span>Nama</span><span>${w.nama}</span></div><div class="r"><span>ID</span><span>${w.id}</span></div><div class="r"><span>Periode</span><span>${pLabel(periode)}</span></div>
+  <div class="d"></div><div class="r"><span>Awal</span><span>${awal} m³</span></div><div class="r"><span>Akhir</span><span>${akhir} m³</span></div><div class="r b"><span>Pemakaian</span><span>${pakai} m³</span></div>
+  <div class="d"></div><div class="r"><span>Air</span><span>${fRp(pakai * w.tarif)}</span></div><div class="r"><span>Abonemen</span><span>${fRp(DB.config.abonemen)}</span></div><div class="r b"><span>TOTAL</span><span>${fRp(total)}</span></div>
+  <div class="d"></div><div class="c" style="margin-top:8px">Terima kasih</div>
+  <script>window.print()<\/script></body></html>`);
+    }
+
+    // ====== TAGIHAN ======
+    function setFilter(f, el) { tFilter = f; document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderTagihan(); }
+    function renderTagihan() {
+      const q = (document.getElementById('tsearch').value || '').toLowerCase(), bulan = document.getElementById('tbulan').value;
+      let list = DB.tagihan.filter(t => {
+        if (tFilter === 'lunas' && t.status !== 'lunas') return false;
+        if (tFilter === 'belum' && t.status !== 'belum') return false;
+        if (bulan && t.periode !== bulan) return false;
+        if (q) { const w = DB.warga.find(w => w.id === t.wargaId) || {}; if (!(w.nama || '').toLowerCase().includes(q)) return false; }
+        return true;
+      }).sort((a, b) => b.periode.localeCompare(a.periode) || b.id.localeCompare(a.id));
+      const el = document.getElementById('tagihan-list');
+      if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-txt">Tidak ada tagihan</div></div>`; return; }
+      el.innerHTML = list.map(t => {
+        const w = DB.warga.find(w => w.id === t.wargaId) || {};
+        const btn = t.status === 'belum'
+          ? `<button class="btn btn-s btn-sm" onclick="openBayar('${t.id}');event.stopPropagation()">Bayar</button>`
+          : `<button class="btn btn-o btn-sm" style="font-size:12px" onclick="batalBayar('${t.id}');event.stopPropagation()">Batal</button>`;
+        return `<div class="li"><div class="li-ico" style="background:${t.status === 'lunas' ? 'var(--green-bg)' : 'var(--amber-bg)'}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${t.status === 'lunas' ? 'var(--green-d)' : '#92400e'}" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="li-main"><div class="li-name">${w.nama || t.wargaId}</div><div class="li-sub">${pLabel(t.periode)} · ${t.pemakaian} m³</div><div style="margin-top:4px;display:flex;align-items:center;gap:6px">${sBadge(t.status)}${t.tglBayar ? `<span style="font-size:11px;color:var(--text3)">${fDate(t.tglBayar)}</span>` : ''}</div></div><div class="li-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div class="li-amt">${fRp(t.total)}</div>${btn}</div></div>`;
+      }).join('');
+    }
+    function openBayar(id) {
+      editTId = id; const t = DB.tagihan.find(t => t.id === id); if (!t) return;
+      const w = DB.warga.find(w => w.id === t.wargaId) || {};
+      document.getElementById('bayar-bill').innerHTML = `<div class="bill"><div class="bill-r"><span class="lbl">Nama</span><span class="val">${w.nama}</span></div><div class="bill-r"><span class="lbl">Periode</span><span class="val">${pLabel(t.periode)}</span></div><div class="bill-r"><span class="lbl">Pemakaian</span><span class="val">${t.pemakaian} m³</span></div><hr class="bdiv"/><div class="btot"><span class="btot-lbl">Total</span><span class="btot-amt">${fRp(t.total)}</span></div></div>`;
+      document.getElementById('btgl').value = new Date().toISOString().split('T')[0];
+      document.getElementById('bnom').value = t.total;
+      openSheet('sh-bayar');
+    }
+    function konfirmasiBayar() {
+      if (!editTId) return; const t = DB.tagihan.find(t => t.id === editTId); if (!t) return;
+      t.status = 'lunas'; t.tglBayar = document.getElementById('btgl').value;
+      saveDB(); closeSheet('sh-bayar'); updateBadge(); renderTagihan(); renderDash();
+      toast('Pembayaran dikonfirmasi!', 'success'); editTId = null;
+    }
+    function batalBayar(id) {
+      if (!confirm('Batalkan status lunas?')) return;
+      const t = DB.tagihan.find(t => t.id === id); if (!t) return;
+      t.status = 'belum'; t.tglBayar = null; saveDB(); updateBadge(); renderTagihan(); renderDash(); toast('Status diubah', 'success');
+    }
+    function updateBadge() {
+      const tp = nowPeriod(), n = DB.tagihan.filter(t => t.status === 'belum' && t.periode === tp).length;
+      const b = document.getElementById('nbadge'); b.textContent = n; b.style.display = n > 0 ? 'inline' : 'none';
+    }
+
+    // ====== LAPORAN ======
+    function renderLaporan() {
+      const bulan = document.getElementById('lapbulan').value, list = DB.tagihan.filter(t => t.periode === bulan);
+      const lunas = list.filter(t => t.status === 'lunas'), belum = list.filter(t => t.status === 'belum');
+      const m3 = list.reduce((s, t) => s + t.pemakaian, 0), rp = list.reduce((s, t) => s + t.total, 0);
+      const lRp = lunas.reduce((s, t) => s + t.total, 0), bRp = belum.reduce((s, t) => s + t.total, 0);
+      document.getElementById('lm3').textContent = m3 + ' m³'; document.getElementById('lm3s').textContent = list.length + ' tagihan';
+      document.getElementById('lrp').textContent = fRp(rp); document.getElementById('lrps').textContent = pLabel(bulan);
+      document.getElementById('llunas').textContent = fRp(lRp); document.getElementById('llunass').textContent = lunas.length + ' orang';
+      document.getElementById('lbelum').textContent = fRp(bRp); document.getElementById('lbelums').textContent = belum.length + ' orang';
+      const el = document.getElementById('laporan-list');
+      if (!list.length) { el.innerHTML = `<div class="empty"><div class="empty-txt">Tidak ada data</div></div>`; return; }
+      el.innerHTML = list.map((t, i) => { const w = DB.warga.find(w => w.id === t.wargaId) || {}; return `<div class="li"><div class="li-ico" style="background:var(--surface2);font-size:13px;font-weight:700;color:var(--text3)">${i + 1}</div><div class="li-main"><div class="li-name">${w.nama || t.wargaId}</div><div class="li-sub">${t.pemakaian} m³ · ${fRp(t.total)}</div></div><div class="li-right">${sBadge(t.status)}</div></div>`; }).join('');
+    }
+    function cetakLaporan() {
+      const bulan = document.getElementById('lapbulan').value, list = DB.tagihan.filter(t => t.periode === bulan);
+      const m3 = list.reduce((s, t) => s + t.pemakaian, 0), rp = list.reduce((s, t) => s + t.total, 0), lRp = list.filter(t => t.status === 'lunas').reduce((s, t) => s + t.total, 0);
+      const win = window.open('', '_blank', 'width=700,height=600');
+      win.document.write(`<html><head><title>Laporan</title><style>body{font-family:Arial,sans-serif;font-size:13px;padding:24px}h2,h3{text-align:center}table{width:100%;border-collapse:collapse;margin-top:16px}th,td{border:1px solid #ddd;padding:7px}th{background:#f5f5f5}.sum{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}.sb{background:#f5f5f5;padding:10px;border-radius:6px;flex:1}.sl{font-size:11px;color:#666;margin-bottom:3px}.sv{font-size:16px;font-weight:700}</style></head><body>
+  <h2>LAPORAN PAM DESA ${DB.config.desa.toUpperCase()}</h2><h3 style="font-weight:400;color:#666">${pLabel(bulan)}</h3>
+  <div class="sum"><div class="sb"><div class="sl">Pemakaian</div><div class="sv">${m3} m³</div></div><div class="sb"><div class="sl">Total Tagihan</div><div class="sv">${fRp(rp)}</div></div><div class="sb"><div class="sl">Terbayar</div><div class="sv">${fRp(lRp)}</div></div><div class="sb"><div class="sl">Belum Bayar</div><div class="sv">${fRp(rp - lRp)}</div></div></div>
+  <table><thead><tr><th>No</th><th>Nama</th><th>Pemakaian</th><th>Tagihan</th><th>Status</th></tr></thead><tbody>${list.map((t, i) => { const w = DB.warga.find(w => w.id === t.wargaId) || {}; return `<tr><td>${i + 1}</td><td>${w.nama || '-'}</td><td>${t.pemakaian} m³</td><td>${fRp(t.total)}</td><td>${t.status === 'lunas' ? 'Lunas' : 'Belum'}</td></tr>`; }).join('')}</tbody></table>
+  <p style="margin-top:12px;font-size:12px;color:#666">Dicetak: ${new Date().toLocaleString('id-ID')} · Petugas: ${DB.config.pj || 'Admin'}</p>
+  <script>window.print()<\/script></body></html>`);
+    }
+
+    // ====== PENGATURAN ======
+    function simpanTarif() { DB.config.tarif = parseInt(document.getElementById('st-tarif').value) || 2000; DB.config.abonemen = parseInt(document.getElementById('st-abon').value) || 5000; saveDB(); loadSettUI(); closeSheet('sh-tarif'); toast('Tarif disimpan!', 'success'); }
+    function simpanDesa() { DB.config.desa = document.getElementById('sd-desa').value || 'Semenharjo'; DB.config.pj = document.getElementById('sd-pj').value; DB.config.telp = document.getElementById('sd-telp').value; saveDB(); loadSettUI(); closeSheet('sh-desa'); toast('Info desa disimpan!', 'success'); }
+    function exportData() { const b = new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `pam-${new Date().toISOString().split('T')[0]}.json`; a.click(); toast('Data diekspor', 'success'); }
+    function importData(e) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { DB = JSON.parse(ev.target.result); saveDB(); init(); toast('Data diimpor!', 'success'); } catch (err) { toast('File tidak valid', 'error'); } }; r.readAsText(f); }
+    function resetData() { if (!confirm('Reset SEMUA data?')) return; DB = { warga: [], tagihan: [], config: { tarif: 2000, abonemen: 5000, desa: 'Semenharjo', pj: '', telp: '' } }; saveDB(); seed(); init(); toast('Data direset', 'success'); }
+
+    // ====== SHEETS ======
+    function openSheet(id) { document.getElementById(id).classList.add('show'); }
+    function closeSheet(id) { document.getElementById(id).classList.remove('show'); }
+    document.querySelectorAll('.sheet-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeSheet(o.id); }));
+
+    // ====== TOAST ======
+    function toast(msg, type = '') { const t = document.createElement('div'); t.className = 'toast ' + type; t.textContent = msg; document.getElementById('toastwrap').appendChild(t); setTimeout(() => t.remove(), 2800); }
+
+    // ====== UTILS ======
+    function fRp(n) { return 'Rp ' + (n || 0).toLocaleString('id-ID'); }
+    function pLabel(s) { if (!s) return '-'; const [y, m] = s.split('-'); return new Date(y, m - 1, 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }); }
+    function fDate(s) { if (!s) return '-'; try { return new Date(s).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return s; } }
+    function sBadge(s) { return s === 'lunas' ? '<span class="badge bg">Lunas</span>' : '<span class="badge br">Belum</span>'; }
+
+    // ====== BOTTOM NAV: Pengaturan via avatar ======
+    // Tambah nav item setting via topbar only — no bottom nav slot
+    // Allow opening setting page via avatar long press
+    document.querySelector('.avatar-btn').addEventListener('click', function () { openSheet('sh-logout'); });
+    // Add setting page trigger
+  </script>
+</body>
+
+</html>
