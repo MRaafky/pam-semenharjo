@@ -9,7 +9,7 @@
   <title>PAM Semenharjo</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
   <!-- Supabase JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
   <style>
     :root {
       --bg: #f0f6ff; --surface: #fff; --surface2: #f4f8ff; --border: #e2eaf6;
@@ -50,6 +50,7 @@
     .l-input:focus { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.15) }
     .l-btn { width: 100%; padding: 15px; background: #fff; border: none; border-radius: var(--r-sm); color: var(--accent-d); font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 4px }
     .l-btn:active { opacity: .9 }
+    .l-btn:disabled { opacity: 0.6; cursor: not-allowed }
     .l-hint { color: rgba(255,255,255,.3); font-size: 12px; margin-top: 14px }
     .l-link { color: rgba(255,255,255,.6); font-size: 13px; margin-top: 16px; cursor: pointer; text-decoration: underline }
 
@@ -271,7 +272,8 @@
           <input class="l-input" id="cfg-key" type="text" placeholder="eyJ..." style="margin-bottom:0" />
         </div>
       </div>
-      <button class="l-btn" onclick="saveConfig()">Sambungkan →</button>
+      <button class="l-btn" id="btn-sambungkan" onclick="saveConfig()" style="pointer-events: all; cursor: pointer; position: relative; z-index: 9999;" disabled>Sambungkan →</button>
+      <p class="l-hint" id="hint-loading" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6;display:block">⏳ Memuat script Supabase...</p>
       <p class="l-hint" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6">Buat tabel di Supabase dengan SQL yang disediakan di bagian bawah panduan setup</p>
       <p class="l-link" onclick="document.getElementById('sql-modal').style.display='block'" style="margin-top:8px; cursor: pointer; pointer-events: all;">Lihat panduan SQL setup →</p>
     </div>
@@ -712,6 +714,21 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
   </div>
 
   <script>
+    // ====== TUNGGU SUPABASE SIAP ======
+    let supabaseReady = false;
+    const waitForSupabase = () => {
+      if (typeof window.supabase !== 'undefined') {
+        supabaseReady = true;
+        const btn = document.getElementById('btn-sambungkan');
+        const hint = document.getElementById('hint-loading');
+        if (btn) btn.disabled = false;
+        if (hint) hint.style.display = 'none';
+      } else {
+        setTimeout(waitForSupabase, 100);
+      }
+    };
+    waitForSupabase();
+
     // ====== CONFIG & SUPABASE ======
     const SQL_SETUP = `-- Jalankan SQL ini di Supabase → SQL Editor
 
@@ -784,8 +801,14 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
     function saveConfig() {
       const url = document.getElementById('cfg-url').value.trim();
       const key = document.getElementById('cfg-key').value.trim();
-      if (!url || !key) { alert('URL dan Key wajib diisi'); return; }
-      if (!url.startsWith('https://')) { alert('URL harus diawali https://'); return; }
+      if (!url || !key) { alert('⚠️ URL dan Key wajib diisi'); return; }
+      if (!url.startsWith('https://')) { alert('⚠️ URL harus diawali https://'); return; }
+      
+      if (typeof window.supabase === 'undefined') {
+        alert('⏳ Tunggu sebentar script masih loading, coba klik lagi dalam 2 detik');
+        return;
+      }
+
       localStorage.setItem('pam_sb_url', url);
       localStorage.setItem('pam_sb_key', key);
       initSupabase(url, key);
