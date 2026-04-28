@@ -716,15 +716,35 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
   <script>
     // ====== TUNGGU SUPABASE SIAP ======
     let supabaseReady = false;
+    let waitCount = 0;
+    const maxWaitTime = 5000; // 5 detik timeout
+    const checkInterval = 100;
+    const maxChecks = maxWaitTime / checkInterval;
+    
     const waitForSupabase = () => {
+      const btn = document.getElementById('btn-sambungkan');
+      const hint = document.getElementById('hint-loading');
+      
       if (typeof window.supabase !== 'undefined') {
+        // ✅ Supabase berhasil dimuat
         supabaseReady = true;
-        const btn = document.getElementById('btn-sambungkan');
-        const hint = document.getElementById('hint-loading');
         if (btn) btn.disabled = false;
         if (hint) hint.style.display = 'none';
+      } else if (waitCount < maxChecks) {
+        // ⏳ Masih menunggu, cek lagi
+        waitCount++;
+        setTimeout(waitForSupabase, checkInterval);
       } else {
-        setTimeout(waitForSupabase, 100);
+        // ❌ Timeout - Supabase tidak berhasil dimuat
+        console.warn('⚠️ Supabase CDN timeout');
+        if (hint) {
+          hint.innerHTML = '⚠️ Gagal memuat Supabase CDN. Pastikan internet terhubung, atau coba refresh halaman.';
+          hint.style.color = '#fbbf24';
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Coba Lagi →';
+        }
       }
     };
     waitForSupabase();
@@ -805,7 +825,7 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
       if (!url.startsWith('https://')) { alert('⚠️ URL harus diawali https://'); return; }
       
       if (typeof window.supabase === 'undefined') {
-        alert('⏳ Tunggu sebentar script masih loading, coba klik lagi dalam 2 detik');
+        alert('⚠️ Script Supabase belum siap dimuat.\n\nSolusi:\n1. Periksa koneksi internet\n2. Coba refresh halaman (F5)\n3. Jika tetap gagal, gunakan browser lain');
         return;
       }
 
