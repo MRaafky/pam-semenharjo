@@ -273,18 +273,63 @@
       </div>
       <button class="l-btn" onclick="saveConfig()">Sambungkan →</button>
       <p class="l-hint" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6">Buat tabel di Supabase dengan SQL yang disediakan di bagian bawah panduan setup</p>
-      <p class="l-link" onclick="showSQLGuide()" style="margin-top:8px">Lihat panduan SQL setup →</p>
+      <p class="l-link" onclick="document.getElementById('sql-modal').style.display='block'" style="margin-top:8px; cursor: pointer; pointer-events: all;">Lihat panduan SQL setup →</p>
     </div>
 
     <!-- SQL GUIDE MODAL -->
-    <div id="sql-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;overflow-y:auto;padding:20px">
+    <div id="sql-modal" onclick="if(event.target === this) this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;overflow-y:auto;padding:20px; cursor: pointer;">
       <div style="background:#1e293b;border-radius:16px;padding:20px;max-width:430px;margin:0 auto">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <span style="color:#fff;font-weight:700;font-size:15px">SQL Setup Supabase</span>
           <span onclick="document.getElementById('sql-modal').style.display='none'" style="color:#94a3b8;cursor:pointer;font-size:20px">✕</span>
         </div>
         <p style="color:#94a3b8;font-size:12px;margin-bottom:12px">Jalankan SQL ini di Supabase → SQL Editor:</p>
-        <pre id="sql-code" style="background:#0f172a;color:#7dd3fc;padding:14px;border-radius:10px;font-size:11px;overflow-x:auto;white-space:pre-wrap;line-height:1.6"></pre>
+        <pre id="sql-code" style="background:#0f172a;color:#7dd3fc;padding:14px;border-radius:10px;font-size:11px;overflow-x:auto;white-space:pre-wrap;line-height:1.6">-- Jalankan SQL ini di Supabase → SQL Editor
+
+-- Tabel config
+CREATE TABLE IF NOT EXISTS pam_config (
+  key TEXT PRIMARY KEY,
+  value JSONB NOT NULL
+);
+
+-- Tabel warga
+CREATE TABLE IF NOT EXISTS pam_warga (
+  id TEXT PRIMARY KEY,
+  nama TEXT NOT NULL,
+  alamat TEXT DEFAULT '',
+  telp TEXT DEFAULT '',
+  tarif INTEGER DEFAULT 2000,
+  meter_awal INTEGER DEFAULT 0,
+  status TEXT DEFAULT 'aktif',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabel tagihan
+CREATE TABLE IF NOT EXISTS pam_tagihan (
+  id TEXT PRIMARY KEY,
+  warga_id TEXT REFERENCES pam_warga(id) ON DELETE CASCADE,
+  periode TEXT NOT NULL,
+  meter_awal NUMERIC DEFAULT 0,
+  meter_akhir NUMERIC DEFAULT 0,
+  pemakaian NUMERIC DEFAULT 0,
+  tarif INTEGER DEFAULT 2000,
+  abonemen INTEGER DEFAULT 5000,
+  total NUMERIC DEFAULT 0,
+  status TEXT DEFAULT 'belum',
+  tgl_bayar TEXT,
+  catatan TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Aktifkan Row Level Security (opsional, sesuaikan dengan kebutuhan)
+ALTER TABLE pam_config ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pam_warga ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pam_tagihan ENABLE ROW LEVEL SECURITY;
+
+-- Policy: izinkan semua operasi dari anon key (untuk single-user app)
+CREATE POLICY "allow_all_config" ON pam_config FOR ALL TO anon USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_warga" ON pam_warga FOR ALL TO anon USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WITH CHECK (true);</pre>
         <button onclick="copySQL()" class="l-btn" style="margin-top:12px;background:var(--accent);color:#fff">Salin SQL</button>
       </div>
     </div>
