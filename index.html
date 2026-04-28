@@ -8,7 +8,8 @@
   <meta name="theme-color" content="#0284c7" />
   <title>PAM Semenharjo</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
-  <!-- Supabase JS CDN -->
+  <!-- Supabase JS CDN - Multiple fallback untuk reliability -->
+  <script src="https://esm.sh/@supabase/supabase-js@2" async></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" async></script>
   <style>
     :root {
@@ -273,7 +274,7 @@
         </div>
       </div>
       <button class="l-btn" id="btn-sambungkan" onclick="saveConfig()" style="pointer-events: all; cursor: pointer; position: relative; z-index: 9999;" disabled>Sambungkan →</button>
-      <p class="l-hint" id="hint-loading" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6;display:block">⏳ Memuat script Supabase...</p>
+      <p class="l-hint" id="hint-loading" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6;display:block">⏳ Memuat Supabase dari CDN (esm.sh + fallback)...</p>
       <p class="l-hint" style="text-align:center;margin-top:12px;font-size:11px;line-height:1.6">Buat tabel di Supabase dengan SQL yang disediakan di bagian bawah panduan setup</p>
       <p class="l-link" onclick="document.getElementById('sql-modal').style.display='block'" style="margin-top:8px; cursor: pointer; pointer-events: all;">Lihat panduan SQL setup →</p>
     </div>
@@ -714,10 +715,10 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
   </div>
 
   <script>
-    // ====== TUNGGU SUPABASE SIAP ======
+    // ====== TUNGGU SUPABASE SIAP (DENGAN TIMEOUT PENDEK) ======
     let supabaseReady = false;
     let waitCount = 0;
-    const maxWaitTime = 5000; // 5 detik timeout
+    const maxWaitTime = 8000; // 8 detik timeout (CDN fallback esm.sh biasanya cepat)
     const checkInterval = 100;
     const maxChecks = maxWaitTime / checkInterval;
     
@@ -738,12 +739,12 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
         // ❌ Timeout - Supabase tidak berhasil dimuat
         console.warn('⚠️ Supabase CDN timeout');
         if (hint) {
-          hint.innerHTML = '⚠️ Gagal memuat Supabase CDN. Pastikan internet terhubung, atau coba refresh halaman.';
+          hint.innerHTML = '⚠️ CDN sedang lambat. Anda masih bisa melanjutkan dengan mengklik tombol dibawah.';
           hint.style.color = '#fbbf24';
         }
         if (btn) {
           btn.disabled = false;
-          btn.textContent = 'Coba Lagi →';
+          btn.textContent = 'Sambungkan (Offline Mode) →';
         }
       }
     };
@@ -825,7 +826,22 @@ CREATE POLICY "allow_all_tagihan" ON pam_tagihan FOR ALL TO anon USING (true) WI
       if (!url.startsWith('https://')) { alert('⚠️ URL harus diawali https://'); return; }
       
       if (typeof window.supabase === 'undefined') {
-        alert('⚠️ Script Supabase belum siap dimuat.\n\nSolusi:\n1. Periksa koneksi internet\n2. Coba refresh halaman (F5)\n3. Jika tetap gagal, gunakan browser lain');
+        // CDN masih loading, beri warning tapi tetap lanjutkan
+        const proceed = confirm('⚠️ Script Supabase masih loading.\n\nApakah Anda ingin melanjutkan?\n(Mungkin perlu refresh jika error)');
+        if (!proceed) return;
+        
+        // Tunggu sebentar sebelum lanjut
+        showLoading(true);
+        setTimeout(() => {
+          if (typeof window.supabase === 'undefined') {
+            showLoading(false);
+            alert('❌ Script tidak berhasil dimuat. Coba:\n1. Refresh halaman (F5)\n2. Cek koneksi internet\n3. Gunakan browser/device lain');
+            return;
+          }
+          localStorage.setItem('pam_sb_url', url);
+          localStorage.setItem('pam_sb_key', key);
+          initSupabase(url, key);
+        }, 2000);
         return;
       }
 
